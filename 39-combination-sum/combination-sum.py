@@ -2,26 +2,19 @@ class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         res = []
 
-        subset = []
-        def dfs(i):
-            currSum = 0
-            for n in subset:
-                currSum += n
+        def dfs(i, cur, total):
+            if total == target:
+                res.append(cur.copy())
+                return
 
-            if currSum == target:
-                res.append(subset.copy())
+            if i >= len(candidates) or total > target:
                 return
             
-            if i >= len(candidates) or currSum >= target:
-                return
+            cur.append(candidates[i])
+            dfs(i, cur, total + candidates[i])
 
-            # decision to include candidates[i]
-            subset.append(candidates[i])
-            dfs(i)
+            cur.pop()
+            dfs(i + 1, cur, total)
 
-            # decision NOT to include candidates[i]
-            subset.pop()
-            dfs(i + 1)
-
-        dfs(0)
+        dfs(0, [], 0)
         return res
