@@ -3,35 +3,26 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        num1 = 0
-        counter = 0
-        while l1 != None:
-            num1 += (l1.val * 10**counter)
-            l1 = l1.next
-            counter += 1
+        dummy = ListNode()
+        cur = dummy
 
-        num2 = 0
-        counter = 0
-        while l2 != None:
-            num2 += (l2.val * 10**counter)
-            l2 = l2.next
-            counter += 1
+        carry = 0
+        while l1 or l2 or carry:
+            v1 = l1.val if l1 else 0
+            v2 = l2.val if l2 else 0
 
-        res = num1 + num2
+            # new digit
+            val = v1 + v2 + carry
+            carry = val // 10
+            val = val % 10
+            cur.next = ListNode(val)
 
-        head = ListNode(0)
-        current = head
-
-        if res == 0:
-            current.next = ListNode(0)
-        else:
-            while res > 0:
-                digit = res % 10
-                newNode = ListNode(digit)
-                current.next = newNode
-                current = newNode
-                res = res // 10
-
-        return head.next
+            # update pointers
+            cur = cur.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+        
+        return dummy.next
