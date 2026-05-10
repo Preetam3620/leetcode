@@ -11,16 +11,16 @@ class Solution:
         visited = set()
         visited.add(source)
 
-        def dfs(i):
-            if i == destination:
+        stack = [source]
+
+        while stack:
+            node = stack.pop()
+            if node == destination:
                 return True
 
-            for neib_node in graph[i]:
-                if neib_node not in visited:
-                    visited.add(neib_node)
-                    if dfs(neib_node):
-                        return True
+            for nei_node in graph[node]:
+                if nei_node not in visited:
+                    visited.add(nei_node)
+                    stack.append(nei_node)
 
-            return False
-
-        return dfs(source)
+        return False
