@@ -11,16 +11,17 @@ class Solution:
         visited = set()
         visited.add(source)
 
-        stack = [source]
+        q = deque()
+        q.append(source)
 
-        while stack:
-            node = stack.pop()
+        while q:
+            node = q.popleft()
             if node == destination:
                 return True
 
             for nei_node in graph[node]:
                 if nei_node not in visited:
                     visited.add(nei_node)
-                    stack.append(nei_node)
+                    q.append(nei_node)
 
         return False
