@@ -21,8 +21,8 @@ class Solution:
 
         for i in range(len(result)):
             chars[i] = result[i]
-        while len(chars) != len(result):
-            chars.pop()
+        
+        del chars[len(result):]
 
         # print(chars, result)
         return len(chars)
