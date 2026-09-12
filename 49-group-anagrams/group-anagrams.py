@@ -1,10 +1,15 @@
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        result = defaultdict(list) # letters : [words]
+        result = []
+        hashMap = {}
         for word in strs:
-            aToZ = [0] * 26
+            count = [0] * 26
             for char in word:
-                aToZ[ord(char) - ord("a")] += 1
-            result[tuple(aToZ)].append(word)
-
-        return list(result.values())
+                count[ord(char) - ord("a")] += 1
+            if tuple(count) not in hashMap:
+                hashMap[tuple(count)] = [word]
+            else:
+                hashMap[tuple(count)].append(word)
+        
+        result = list(hashMap.values())
+        return result
