@@ -1,12 +1,10 @@
-import copy
-
 class Solution:
-    def moveZeroes(self, nums: List[int]) -> None:
+    def moveZeroes(self, nums: list[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
         """
         nonZeroIndex = 0
-        for curr in range(len(nums)):
-            if nums[curr] != 0:
-                nums[curr], nums[nonZeroIndex] = nums[nonZeroIndex], nums[curr]
+        for index, num in enumerate(nums):
+            if num != 0:
+                nums[index], nums[nonZeroIndex] = nums[nonZeroIndex], nums[index]
                 nonZeroIndex += 1
