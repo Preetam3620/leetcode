@@ -6,11 +6,11 @@
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        hashMap = defaultdict(int)
+        visited = set()
         
         while head:
-            if head in hashMap:
+            if head in visited:
                 return True
-            hashMap[head] = head.val
+            visited.add(head)
             head = head.next
         return False
