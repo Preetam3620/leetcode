@@ -3,9 +3,9 @@ class Solution:
         incoming = defaultdict(int)
         outgoing = defaultdict(int)
 
-        for (k, v) in trust:
-            incoming[v] += 1
-            outgoing[k] += 1
+        for src, dst in trust:
+            incoming[dst] += 1
+            outgoing[src] += 1
 
         for i in range(1, n + 1):
             if incoming[i] == (n - 1) and outgoing[i] == 0:
