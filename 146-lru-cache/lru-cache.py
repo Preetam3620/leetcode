@@ -1,36 +1,32 @@
 class Node:
     def __init__(self, key, val):
         self.key, self.val = key, val
-        self.prev = None
-        self.next = None
+        self.prev = self.next = None
 
 class LRUCache:
 
     def __init__(self, capacity: int):
         self.capacity = capacity
-        self.cache = {} # map key:node
+        self.cache = {}
 
-        # left = LeastRU, right = MostRU
-        self.left, self.right = Node(0,0), Node(0,0)
-        self.left.next = self.right
-        self.right.prev = self.left
+        # left = LRU, right = Most recent
+        self.left, self.right = Node(0, 0), Node(0, 0)
+        self.left.next, self.right.prev = self.right, self.left
 
-    # remove from LL
+    # remove node from list
     def remove(self, node):
-        prev, next = node.prev, node.next
-        prev.next = next
-        next.prev = prev
+        prev, nxt = node.prev, node.next
+        prev.next = nxt
+        nxt.prev = prev
 
-    # insert node at right in LL
+    # insert at right
     def insert(self, node):
-        prev, next= self.right.prev, self.right
-        prev.next = next.prev = node
-        node.next = next
-        node.prev = prev
+        prev, nxt = self.right.prev, self.right
+        prev.next = nxt.prev = node
+        node.next, node.prev = nxt, prev
 
     def get(self, key: int) -> int:
         if key in self.cache:
-            # mark as most recently used
             self.remove(self.cache[key])
             self.insert(self.cache[key])
             return self.cache[key].val
@@ -39,15 +35,15 @@ class LRUCache:
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
             self.remove(self.cache[key])
-
-        self.cache[key] = Node(key, value)        
+        self.cache[key] = Node(key, value)
         self.insert(self.cache[key])
 
         if len(self.cache) > self.capacity:
-            # remove LRU from LL and cache (Map)
+            # remove LRU
             lru = self.left.next
             self.remove(lru)
             del self.cache[lru.key]
+
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
