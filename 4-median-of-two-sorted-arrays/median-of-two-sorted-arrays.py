@@ -1,27 +1,30 @@
 class Solution:
     def findMedianSortedArrays(self, nums1: list[int], nums2: list[int]) -> float:
-        m = len(nums1)
-        n = len(nums2)
-        resultLen = m + n
-        
-        result = []
-        i, j = 0, 0
-        while i < len(nums1) and j < len(nums2):
-            if nums1[i] < nums2[j]:
-                result.append(nums1[i])
-                i += 1
-            else:
-                result.append(nums2[j])
-                j += 1
+        A, B = nums1, nums2
+        total = len(nums1) + len(nums2)
+        half = total // 2
 
-        # fill leftover
-        result.extend(nums1[i:])      
-        result.extend(nums2[j:])      
-        
-        if resultLen % 2 != 0:
-            medianIndex = resultLen // 2
-            return result[medianIndex]
-        else:
-            m1 = resultLen // 2
-            m2 = resultLen // 2 - 1
-            return (result[m1] + result[m2]) / 2
+        if len(B) < len(A):
+            A, B = B, A
+
+        l, r = 0, len(A) - 1
+        while True:
+            i = (l + r) // 2 # A
+            j = half - i - 2 # B
+
+            leftA = A[i] if i >= 0 else float("-infinity")
+            rightA = A[i + 1] if (i + 1) < len(A) else float("infinity") 
+            leftB = B[j] if j >= 0 else float("-infinity")
+            rightB = B[j + 1] if (j + 1) < len(B) else float("infinity")
+
+            # partition is correct
+            if leftA <= rightB and leftB <= rightA:
+                # odd
+                if total % 2:
+                    return min(rightA, rightB)
+                else:
+                    return (max(leftA, leftB) + min(rightA, rightB)) / 2
+            elif leftA > rightB:
+                r = i - 1
+            else:
+                l = i + 1
